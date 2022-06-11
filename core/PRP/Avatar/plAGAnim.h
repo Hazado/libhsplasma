@@ -32,7 +32,7 @@ public:
 
 protected:
     std::vector<plAGApplicator*> fApps;
-    float fBlend, fStart, fEnd;
+    float fBlend, fStart, fEnd, fUK1, fUK2;
     ST::string fName;
     unsigned char fEoaFlag;
 

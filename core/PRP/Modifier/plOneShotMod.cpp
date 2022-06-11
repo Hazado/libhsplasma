@@ -29,6 +29,10 @@ void plOneShotMod::read(hsStream* S, plResManager* mgr)
     if (S->getVer() > 0x02006304) { /*TODO: Verify! */
         fNoSeek = S->readBool();
     }
+    
+    if (pdUnifiedTypeMap::CurrentVersion(kOneShotMod) == 3) {
+        fXB = S->readBool();
+    }
 }
 
 void plOneShotMod::write(hsStream* S, plResManager* mgr)
@@ -41,6 +45,9 @@ void plOneShotMod::write(hsStream* S, plResManager* mgr)
     S->writeBool(fReversable);
     S->writeBool(fSmartSeek);
     S->writeBool(fNoSeek);
+    if (pdUnifiedTypeMap::CurrentVersion(kOneShotMod) == 3) {
+        S->writeBool(fXB);
+    }
 }
 
 void plOneShotMod::IPrcWrite(pfPrcHelper* prc)
@@ -54,6 +61,9 @@ void plOneShotMod::IPrcWrite(pfPrcHelper* prc)
     prc->writeParam("Reversable", fReversable);
     prc->writeParam("SmartSeek", fSmartSeek);
     prc->writeParam("NoSeek", fNoSeek);
+    if (pdUnifiedTypeMap::CurrentVersion(kOneShotMod) == 3) {
+        prc->writeParam("XB", fXB);
+    }
     prc->endTag(true);
 }
 
@@ -66,6 +76,9 @@ void plOneShotMod::IPrcParse(const pfPrcTag* tag, plResManager* mgr)
         fReversable = tag->getParam("Reversable", "false").to_bool();
         fSmartSeek = tag->getParam("SmartSeek", "false").to_bool();
         fNoSeek = tag->getParam("NoSeek", "true").to_bool();
+        if (pdUnifiedTypeMap::CurrentVersion(kOneShotMod) == 3) {
+            fXB = tag->getParam("XB", "false").to_bool();
+        }
     } else {
         plMultiModifier::IPrcParse(tag, mgr);
     }

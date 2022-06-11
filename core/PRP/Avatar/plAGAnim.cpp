@@ -30,6 +30,10 @@ void plAGAnim::read(hsStream* S, plResManager* mgr)
     fName = S->readSafeStr();
     fStart = S->readFloat();
     fEnd = S->readFloat();
+    if (pdUnifiedTypeMap::CurrentVersion(kATCAnim) == 5) {
+        fUK1 = S->readFloat();
+        fUK2 = S->readFloat();
+    }
 
     clearApplicators();
     fApps.resize(S->readInt());
@@ -51,6 +55,10 @@ void plAGAnim::write(hsStream* S, plResManager* mgr)
     S->writeSafeStr(fName);
     S->writeFloat(fStart);
     S->writeFloat(fEnd);
+    if (pdUnifiedTypeMap::CurrentVersion(kATCAnim) == 5) {
+        S->writeFloat(fUK1);
+        S->writeFloat(fUK2);
+    }
 
     S->writeInt(fApps.size());
     for (size_t i=0; i<fApps.size(); i++) {
@@ -70,6 +78,10 @@ void plAGAnim::IPrcWrite(pfPrcHelper* prc)
     prc->writeParam("Name", fName);
     prc->writeParam("Start", fStart);
     prc->writeParam("End", fEnd);
+    if (pdUnifiedTypeMap::CurrentVersion(kATCAnim) == 5) {
+        prc->writeParam("UK1", fUK1);
+        prc->writeParam("UK2", fUK2);
+    }
     prc->writeParam("EoaFlag", fEoaFlag);
     prc->endTag(true);
 
@@ -93,6 +105,10 @@ void plAGAnim::IPrcParse(const pfPrcTag* tag, plResManager* mgr)
         fName = tag->getParam("Name", "");
         fStart = tag->getParam("Start", "0").to_float();
         fEnd = tag->getParam("End", "0").to_float();
+        if (pdUnifiedTypeMap::CurrentVersion(kATCAnim) == 5) {
+            fUK1 = tag->getParam("UK1", "0").to_float();
+            fUK2 = tag->getParam("UK2", "0").to_float();
+        }
         fEoaFlag = tag->getParam("EoaFlag", "0").to_uint();
     } else if (tag->getName() == "Applicators") {
         clearApplicators();

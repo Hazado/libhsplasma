@@ -25,7 +25,7 @@ class HSPLASMA_EXPORT plOneShotMod : public plMultiModifier
 
 protected:
     ST::string fAnimName;
-    bool fDrivable, fReversable, fSmartSeek, fNoSeek;
+    bool fDrivable, fReversable, fSmartSeek, fNoSeek, fXB;
     float fSeekDuration;
 
 public:
